@@ -13,7 +13,6 @@ let
     mkIf
     ;
   cfg = config.services.fusionsolar-reporter;
-  python = pkgs.python3.withPackages (p: with p; [ selenium ]);
 in
 
 {
@@ -45,10 +44,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets."fusionsolar" = {
-      sopsFile = ../../../../secrets/fusionsolar.env;
-      format = "dotenv";
-    };
     systemd.timers.fusionsolar-reporter = {
       description = "Fusionsolar reporter timer";
       wantedBy = [ "timers.target" ];
@@ -60,10 +55,6 @@ in
     };
     systemd.services.fusionsolar-reporter = {
       enable = true;
-      path = with pkgs; [
-        chromedriver
-        chromium
-      ];
       requires = [ "network-online.target" ];
       serviceConfig = {
         EnvironmentFile = cfg.environmentFile;
@@ -72,7 +63,9 @@ in
         Group = cfg.group;
       };
       script = ''
-        exec ${lib.getExe pkgs.xvfb-run} --server-args="-screen 0, 1024x768x24"  ${python.interpreter} ${./payload.py}
+        exec ${lib.getExe pkgs.xvfb-run} \
+          --server-args="-screen 0, 1024x768x24" \
+          ${lib.getExe (pkgs.python3Packages.callPackage ./package.nix {})}
       '';
     };
   };
