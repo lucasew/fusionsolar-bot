@@ -11,5 +11,6 @@
     pkgs = import nixpkgs { inherit system; };
   in {
     packages.default = pkgs.python3Packages.callPackage ./package.nix {};
+    nixosModules.default = import ./nixos.nix;
   });
 }
