@@ -1,0 +1,29 @@
+name: "CI and deployment"
+on: [push]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  FULL_IMAGE: ${{REGISTRY}}/${{IMAGE_NAME}}
+jobs:
+  ci-and-release:
+    name: "CI and release"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v1
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix flake check
+      - run: nix build .#container && ./result | docker load
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker tag $( docker image ls --format '{{.ID}}') ${{FULL_IMAGE}}/$(docker image ls --format '{{.Tag}}')
+      - run: docker push ${{FULL_IMAGE}}/$(docker image ls --format '{{.Tag}}')
