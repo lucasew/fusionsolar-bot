@@ -10,8 +10,13 @@ dockerTools.streamLayeredImage {
   maxLayers = 2;
 
   extraCommands = ''
-    mkdir -m0777 -p tmp
+    mkdir -m777 -p tmp etc
   '';
+
+  uid = 1000;
+  gid = 1000;
+  uname = "user";
+  gname = "user";
 
   config = {
     Entrypoint = [
@@ -21,7 +26,6 @@ dockerTools.streamLayeredImage {
     User = "1000:1000";
     Env = [
       "HOME=/tmp"
-      "CHROME_USER_DATA_DIR=/tmp/chrome"
     ];
   };
 }
