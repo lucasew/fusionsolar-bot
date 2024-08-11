@@ -2,6 +2,7 @@
 , python3Packages
 , lib
 , self
+, fontconfig
 }:
 
 dockerTools.streamLayeredImage {
@@ -18,7 +19,7 @@ dockerTools.streamLayeredImage {
   ];
 
   extraCommands = ''
-    mkdir -m777 -p tmp etc
+    mkdir -m777 -p tmp etc dev/shm
   '';
 
   uid = 1000;
@@ -38,6 +39,8 @@ dockerTools.streamLayeredImage {
       "UID=1000"
       "GID=1000"
       "TZ=UTC"
+      "FONTCONFIG_FILE=${fontconfig.out}/etc/fonts/fonts.conf"
+      "FONTCONFIG_PATH=${fontconfig.out}/etc/fonts/"
     ];
   };
 }

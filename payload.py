@@ -32,6 +32,7 @@ parser.add_argument('--smtp-passwd', default=os.getenv("SMTP_PASSWD"))
 parser.add_argument('--smtp-server', default=os.getenv("SMTP_SERVER"))
 parser.add_argument('--smtp-destinations', default=os.getenv("SMTP_DESTINATIONS"))
 parser.add_argument('--headless', action='store_true')
+parser.add_argument('--verbose', '-v', action='store_true')
 args = parser.parse_args()
 
 enable_email = None not in [args.smtp_user, args.smtp_passwd, args.smtp_server, args.smtp_destinations]
@@ -52,9 +53,12 @@ if None in [args.user, args.password]:
     exit(1)
 
 with tempfile.TemporaryDirectory() as tmpdir:
+    service_args = []
+    if args.verbose:
+        service_args.append('--verbose')
     service = webdriver.chrome.service.Service(
         executable_path=which("chromedriver"),
-        service_args=["--verbose"],
+        service_args=service_args,
         log_output=subprocess.STDOUT
     )
     chrome_options = webdriver.ChromeOptions()
@@ -64,7 +68,8 @@ with tempfile.TemporaryDirectory() as tmpdir:
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--log-level=DEBUG')
+    if args.verbose:
+        chrome_options.add_argument('--log-level=DEBUG')
     chrome_options.add_argument(f'--user-data-dir={tmpdir}')
     chrome_options.add_argument('--window-size=1280,720')
     chrome_options.add_argument('--remote-debugging-pipe')
