@@ -1,8 +1,5 @@
 name: "CI and deployment"
 on: [push]
-env:
-  REGISTRY: ghcr.io
-  FULL_IMAGE: ${{ REGISTRY }}/${{ IMAGE_NAME }}
 jobs:
   ci-and-release:
     name: "CI and release"
