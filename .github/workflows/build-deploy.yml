@@ -26,7 +26,7 @@ jobs:
           username: ${{ env.USERNAME }}
           password: ${{ github.token }}
       - env:
-          TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         run: |
           docker image ls
           docker tag $( docker image ls -f reference=fusionsolar-bot --format '{{.ID}}' ) ${{ env.TAG }}:$( docker image ls -f reference=fusionsolar-bot --format '{{.Tag}}' )
