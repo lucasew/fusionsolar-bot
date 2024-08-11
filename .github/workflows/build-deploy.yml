@@ -25,10 +25,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
           password: ${{ github.token }}
-      - run: |
-          docker image ls
-          docker tag $( docker image ls --format '{{.ID}}') ${{ env.TAG }}
-          docker push ${{ env.TAG }}
-        env:
+      - env:
           TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          
+        run: |
+          docker image ls
+          docker tag $( docker image ls -f reference=fusionsolar-bot --format '{{.ID}}' ) ${{ env.TAG }}
+          docker push ${{ env.TAG }}
