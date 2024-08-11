@@ -6,7 +6,6 @@ jobs:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
-      TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       USERNAME: ${{ github.actor }}
     runs-on: ubuntu-latest
     permissions:
@@ -26,5 +25,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
           password: ${{ github.token }}
-      - run: docker tag $( docker image ls --format '{{.ID}}') ${{ env.TAG }}
-      - run: docker push ${{ env.TAG }}
+      - run: |
+          docker tag $( docker image ls --format '{{.ID}}') ${{ env.TAG }}
+          docker push ${{ env.TAG }}
+        env:
+          TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          
