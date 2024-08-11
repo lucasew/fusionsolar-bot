@@ -26,5 +26,5 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
           password: ${{ github.token }}
-      - run: docker tag $( docker image ls --format '{{.ID}}') ${{ FULL_IMAGE }}/$(docker image ls --format '{{.Tag}}')
-      - run: docker push ${{ FULL_IMAGE }}/$(docker image ls --format '{{.Tag}}')
+      - run: docker tag $( docker image ls --format '{{.ID}}') ${{ env.FULL_IMAGE }}/$(docker image ls --format '{{.Tag}}')
+      - run: docker push ${{ env.FULL_IMAGE }}/$(docker image ls --format '{{.Tag}}')
