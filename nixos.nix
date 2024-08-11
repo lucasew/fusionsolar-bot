@@ -63,9 +63,7 @@ in
         Group = cfg.group;
       };
       script = ''
-        exec ${lib.getExe pkgs.xvfb-run} \
-          --server-args="-screen 0, 1024x768x24" \
-          ${lib.getExe (pkgs.python3Packages.callPackage ./package.nix {})}
+        exec ${lib.getExe (pkgs.python3Packages.callPackage ./package.nix {})} --headless
       '';
     };
   };
