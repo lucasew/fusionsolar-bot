@@ -52,7 +52,7 @@ Parâmetros no formato `flag/variável de ambiente`.
 - `--smtp-user/SMTP_USER`: usuário para logar no SMTP do servidor para enviar e-mail
 - `--smtp-password/SMTP_PASSWD`: senha para logar no SMTP do servidor para enviar e-mail
 - `--smtp-server/SMTP_SERVER`: servidor SMTP para envio do email
-- `--smtp-destinations/SMTP_DESTINATIONS`: lista de e-mails para enviar os resultados
+- `--smtp-destinations/SMTP_DESTINATIONS`: lista de e-mails para enviar os resultados separada por espaço
 - `--headless`: não mostar janela do chrome usada na automação, usada internamente
 - `--verbose`: dar mais detalhes sobre o que tá acontecendo, bom pra debug
 
