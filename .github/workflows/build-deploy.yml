@@ -29,5 +29,5 @@ jobs:
           TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         run: |
           docker image ls
-          docker tag $( docker image ls -f reference=fusionsolar-bot --format '{{.ID}}' ) ${{ env.TAG }}
-          docker push ${{ env.TAG }}
+          docker tag $( docker image ls -f reference=fusionsolar-bot --format '{{.ID}}' ) ${{ env.TAG }}:$( docker image ls -f reference=fusionsolar-bot --format '{{.Tag}}' )
+          docker push ${{ env.TAG }}:$( docker image ls -f reference=fusionsolar-bot --format '{{.Tag}}' )
