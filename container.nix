@@ -9,6 +9,14 @@ dockerTools.streamLayeredImage {
   tag = self.rev or self.dirtyRev;
   maxLayers = 2;
 
+  contents = [
+    dockerTools.binSh
+    (dockerTools.fakeNss.override {
+      extraPasswdLines = ["user:x:1000:1000:new user:/tmp:/bin/sh"];
+      extraGroupLines = ["user:x:1000:"];
+    })
+  ];
+
   extraCommands = ''
     mkdir -m777 -p tmp etc
   '';
@@ -23,9 +31,13 @@ dockerTools.streamLayeredImage {
       (lib.getExe (python3Packages.callPackage ./package.nix {}))
       "--headless"
     ];
-    User = "1000:1000";
+    User = "user";
     Env = [
       "HOME=/tmp"
+      "LANGUAGE=en_US"
+      "UID=1000"
+      "GID=1000"
+      "TZ=UTC"
     ];
   };
 }

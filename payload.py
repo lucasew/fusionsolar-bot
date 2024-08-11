@@ -61,10 +61,11 @@ with tempfile.TemporaryDirectory() as tmpdir:
     if args.headless:
         chrome_options.headless = True
         chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--log-level=DEBUG')
     chrome_options.add_argument(f'--user-data-dir={tmpdir}')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--window-size=1280,720')
     chrome_options.add_argument('--remote-debugging-pipe')
     driver = webdriver.Chrome(
